@@ -5,9 +5,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React from "react";
-
-//type Props = {}
 
 export default function About() {
   const desc =
