@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
-    <div className='w-full bg-slate-700 flex flex-col flex-col-2 gap-2  justify-around items-center py-4 sm:py-8  '>
+    <div className='w-full bg-slate-900 dark:bg-slate-950 flex flex-col flex-col-2 gap-2  justify-around items-center py-4 sm:py-8  '>
       <div>
         <h1 className='font-extrabold font-semibold p-2 text-slate-400 flex-1'>
           A weather app made by AshrafWeb
