@@ -1,25 +1,42 @@
 import { Card, CardContent } from "./ui/card";
-import { ArrowDown, ArrowUp, Droplets, Wind } from "lucide-react";
+import { ArrowDown, ArrowUp, Droplets, Wind, ThermometerSun } from "lucide-react";
 import {
   type WeatherData,
   type GeocodingResponse,
   variants,
 } from "@/utils/types";
 import { motion } from "framer-motion";
+import { useWeatherProcessor } from "@/hooks/use-weather-processor";
+import { useUnitSystem } from "@/hooks/use-unit-system";
+
 interface CurrentWeatherProps {
   data: WeatherData;
   locationName?: GeocodingResponse;
 }
 
 export function CurrentWeather({ data, locationName }: CurrentWeatherProps) {
-  const {
-    weather: [currentWeather],
-    main: { temp, feels_like, temp_min, temp_max, humidity },
-    wind: { speed },
-  } = data;
+  const { units } = useUnitSystem();
+  const processed = useWeatherProcessor(data, units);
 
-  // Format temperature
-  const formatTemp = (temp: number) => `${Math.round(temp)}°`;
+  if (!processed) return null;
+
+  const {
+    currentTemp,
+    feelsLike,
+    tempMin,
+    tempMax,
+    tempUnit,
+    condition,
+    iconCode,
+    humidity,
+    windSpeed,
+    windSpeedUnit,
+    showFeelsLikeBadge,
+    feelsLikeMessage,
+    feelsLikeDiffDisplay,
+  } = processed;
+
+  const formatTemp = (value: number) => `${value}°`;
 
   return (
     <motion.div
@@ -50,20 +67,29 @@ export function CurrentWeather({ data, locationName }: CurrentWeatherProps) {
 
               <div className='flex items-center gap-2'>
                 <p className='text-7xl font-bold tracking-tighter'>
-                  {formatTemp(temp)}
+                  {formatTemp(currentTemp)}
+                  <span className='text-4xl'>{tempUnit}</span>
                 </p>
                 <div className='space-y-1'>
-                  <p className='text-sm font-medium text-muted-foreground'>
-                    Feels like {formatTemp(feels_like)}
-                  </p>
+                  <div className='flex items-center gap-1.5'>
+                    <p className='text-sm font-medium text-muted-foreground'>
+                      Feels like {formatTemp(feelsLike)}{tempUnit}
+                    </p>
+                    {showFeelsLikeBadge && (
+                      <span className='inline-flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300'>
+                        <ThermometerSun className='h-3 w-3' />
+                        {feelsLikeMessage} ({feelsLikeDiffDisplay}{tempUnit})
+                      </span>
+                    )}
+                  </div>
                   <div className='flex gap-2 text-sm font-medium'>
                     <span className='flex items-center gap-1 text-blue-500'>
                       <ArrowDown className='h-3 w-3' />
-                      {formatTemp(temp_min)}
+                      {formatTemp(tempMin)}{tempUnit}
                     </span>
                     <span className='flex items-center gap-1 text-red-500'>
                       <ArrowUp className='h-3 w-3' />
-                      {formatTemp(temp_max)}
+                      {formatTemp(tempMax)}{tempUnit}
                     </span>
                   </div>
                 </div>
@@ -81,7 +107,9 @@ export function CurrentWeather({ data, locationName }: CurrentWeatherProps) {
                   <Wind className='h-4 w-4 text-blue-500' />
                   <div className='space-y-0.5'>
                     <p className='text-sm font-medium'>Wind Speed</p>
-                    <p className='text-sm text-muted-foreground'>{speed} m/s</p>
+                    <p className='text-sm text-muted-foreground'>
+                      {windSpeed} {windSpeedUnit}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -90,14 +118,12 @@ export function CurrentWeather({ data, locationName }: CurrentWeatherProps) {
             <div className='flex flex-col items-center justify-center'>
               <div className='relative flex aspect-square w-full max-w-[200px] items-center justify-center'>
                 <img
-                  src={`https://openweathermap.org/img/wn/${currentWeather.icon}@4x.png`}
-                  alt={currentWeather.description}
+                  src={`https://openweathermap.org/img/wn/${iconCode}@4x.png`}
+                  alt={condition}
                   className='h-full w-full object-contain'
                 />
                 <div className='absolute bottom-0 text-center'>
-                  <p className='text-sm font-medium capitalize'>
-                    {currentWeather.description}
-                  </p>
+                  <p className='text-sm font-medium capitalize'>{condition}</p>
                 </div>
               </div>
             </div>
