@@ -8,6 +8,7 @@ import { Toaster } from "./components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import About from "./pages/about";
+import { UnitSystemProvider } from "./components/unit-system-provider";
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -23,14 +24,16 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ThemeProvider defaultTheme='dark'>
-          <Layout>
-            <Routes>
-              <Route path='/' element={<WeatherDashboard />} />
-              <Route path='/city/:cityName' element={<CityPage />} />
-              <Route path='/about' element={<About />} />
-            </Routes>
-          </Layout>
-          <Toaster richColors />
+          <UnitSystemProvider>
+            <Layout>
+              <Routes>
+                <Route path='/' element={<WeatherDashboard />} />
+                <Route path='/city/:cityName' element={<CityPage />} />
+                <Route path='/about' element={<About />} />
+              </Routes>
+            </Layout>
+            <Toaster richColors />
+          </UnitSystemProvider>
         </ThemeProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
