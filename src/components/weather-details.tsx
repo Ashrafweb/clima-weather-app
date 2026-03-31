@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Sunrise, Sunset, Compass, Gauge } from "lucide-react";
 import { format } from "date-fns";
 import { variants, type WeatherData } from "@/utils/types";
 import { motion } from "framer-motion";
+import { WeatherCard } from "./weather-card";
 interface WeatherDetailsProps {
   data: WeatherData;
 }
@@ -62,31 +62,26 @@ export function WeatherDetails({ data }: WeatherDetailsProps) {
       variants={variants}
       transition={{ duration: 0.8 }}
     >
-      <Card className='shadow-2xl'>
-        <CardHeader>
-          <CardTitle>Weather Details</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <WeatherCard title='Weather Details'>
           <div className='grid gap-6 sm:grid-cols-2'>
             {details.map((detail) => (
               <div
                 key={detail.title}
-                className='flex items-center gap-3 rounded-lg border p-4'
+                className='flex items-center gap-3 rounded-lg border border-white/20 bg-white/10 p-4'
               >
                 <detail.icon className={`h-5 w-5 ${detail.color}`} />
                 <div>
-                  <p className='text-sm font-medium leading-none'>
+                  <p className='text-sm font-medium leading-none text-white'>
                     {detail.title}
                   </p>
-                  <p className='text-sm text-muted-foreground'>
+                  <p className='text-sm text-slate-200'>
                     {detail.value}
                   </p>
                 </div>
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
+      </WeatherCard>
     </motion.div>
   );
 }

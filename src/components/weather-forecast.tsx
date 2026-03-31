@@ -1,8 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { ArrowDown, ArrowUp, Droplets, Wind } from "lucide-react";
 import { format } from "date-fns";
 import { variants, type ForecastData } from "@/utils/types";
 import { motion } from "framer-motion";
+import { WeatherCard } from "./weather-card";
 interface WeatherForecastProps {
   data: ForecastData;
 }
@@ -56,22 +56,18 @@ export function WeatherForecast({ data }: WeatherForecastProps) {
       variants={variants}
       transition={{ duration: 0.8 }}
     >
-      <Card className='shadow-2xl'>
-        <CardHeader>
-          <CardTitle>5-Day Forecast</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <WeatherCard title='5-Day Forecast'>
           <div className='grid gap-4'>
             {nextDays.map((day) => (
               <div
                 key={day.date}
-                className='grid grid-cols-3 items-center gap-4 rounded-lg border p-4'
+                className='grid grid-cols-1 items-center gap-3 rounded-lg border border-white/20 bg-white/10 p-4 md:grid-cols-3 md:gap-4'
               >
                 <div>
-                  <p className='font-medium'>
+                  <p className='font-medium text-white'>
                     {format(new Date(day.date * 1000), "EEE, MMM d")}
                   </p>
-                  <p className='text-sm text-muted-foreground capitalize'>
+                  <p className='text-sm capitalize text-slate-200'>
                     {day.weather.description}
                   </p>
                 </div>
@@ -90,18 +86,17 @@ export function WeatherForecast({ data }: WeatherForecastProps) {
                 <div className='flex justify-end gap-4'>
                   <span className='flex items-center gap-1'>
                     <Droplets className='h-4 w-4 text-blue-500' />
-                    <span className='text-sm'>{day.humidity}%</span>
+                    <span className='text-sm text-slate-100'>{day.humidity}%</span>
                   </span>
                   <span className='flex items-center gap-1'>
                     <Wind className='h-4 w-4 text-blue-500' />
-                    <span className='text-sm'>{day.wind}m/s</span>
+                    <span className='text-sm text-slate-100'>{day.wind}m/s</span>
                   </span>
                 </div>
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
+      </WeatherCard>
     </motion.div>
   );
 }

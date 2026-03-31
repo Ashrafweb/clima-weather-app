@@ -6,6 +6,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { WeatherDetails } from "@/components/weather-details";
 import { WeatherForecast } from "@/components/weather-forecast";
+import { useWeatherBackground } from "@/components/weather-background-provider";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import {
   useReverseGeocodeQuery,
@@ -13,7 +14,7 @@ import {
   useWeatherQuery,
 } from "@/hooks/use-weather";
 import { AlertTriangle, MapPin, RefreshCw } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 
 const WeatherDashboard: React.FC = () => {
   const {
@@ -26,6 +27,13 @@ const WeatherDashboard: React.FC = () => {
   const weatherQuery = useWeatherQuery(coordinates);
   const forecastQuery = useWeatherForecast(coordinates);
   const locationQuery = useReverseGeocodeQuery(coordinates);
+  const { setWeatherMain } = useWeatherBackground();
+  const weatherMain = weatherQuery.data?.weather?.[0]?.main ?? null;
+
+  useEffect(() => {
+    setWeatherMain(weatherMain);
+    return () => setWeatherMain(null);
+  }, [setWeatherMain, weatherMain]);
 
   const handleRefresh = () => {
     getlocation();
@@ -37,7 +45,7 @@ const WeatherDashboard: React.FC = () => {
   };
 
   if (locationLoading) {
-    <WeatherSkeleton />;
+    return <WeatherSkeleton />;
   }
 
   if (locationError) {

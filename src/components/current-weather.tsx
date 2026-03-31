@@ -1,4 +1,3 @@
-import { Card, CardContent } from "./ui/card";
 import { ArrowDown, ArrowUp, Droplets, Wind, ThermometerSun } from "lucide-react";
 import {
   type WeatherData,
@@ -8,6 +7,7 @@ import {
 import { motion } from "framer-motion";
 import { useWeatherProcessor } from "@/hooks/use-weather-processor";
 import { useUnitSystem } from "@/hooks/use-unit-system";
+import { WeatherCard } from "./weather-card";
 
 interface CurrentWeatherProps {
   data: WeatherData;
@@ -45,41 +45,40 @@ export function CurrentWeather({ data, locationName }: CurrentWeatherProps) {
       variants={variants}
       transition={{ duration: 0.5 }}
     >
-      <Card className='overflow-hidden shadow-2xl'>
-        <CardContent className='p-6'>
+      <WeatherCard className='overflow-hidden'>
           <div className='grid gap-6 md:grid-cols-2'>
             <div className='space-y-4'>
               <div className='space-y-2'>
                 <div className='flex items-center'>
-                  <h2 className='text-2xl font-bold tracking-tight'>
+                  <h2 className='text-2xl font-bold tracking-tight text-white'>
                     {locationName?.name}
                   </h2>
                   {locationName?.state && (
-                    <span className='text-muted-foreground'>
+                    <span className='text-slate-200'>
                       , {locationName.state}
                     </span>
                   )}
                 </div>
-                <p className='text-sm text-muted-foreground'>
+                <p className='text-sm text-slate-200'>
                   {locationName?.country}
                 </p>
               </div>
 
               <div className='flex items-center gap-2'>
-                <p className='text-7xl font-bold tracking-tighter'>
+                <p className='text-7xl font-bold tracking-tighter text-white'>
                   {formatTemp(currentTemp)}
-                  <span className='text-4xl'>{tempUnit}</span>
+                  <span className='text-4xl text-slate-100'>{tempUnit}</span>
                 </p>
                 <div className='space-y-1'>
                   <div className='flex items-center gap-1.5'>
-                    <p className='text-sm font-medium text-muted-foreground'>
+                    <p className='text-sm font-medium text-slate-200'>
                       Feels like {formatTemp(feelsLike)}{tempUnit}
                     </p>
                     {showFeelsLikeBadge && (
-                      <span className='inline-flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-semibold text-orange-700 dark:bg-orange-900/40 dark:text-orange-300'>
-                        <ThermometerSun className='h-3 w-3' />
-                        {feelsLikeMessage} ({feelsLikeDiffDisplay}{tempUnit})
-                      </span>
+                        <span className='inline-flex items-center gap-1 rounded-full border border-orange-200/40 bg-orange-300/20 px-2 py-0.5 text-xs font-semibold text-orange-100'>
+                          <ThermometerSun className='h-3 w-3' />
+                          {feelsLikeMessage} ({feelsLikeDiffDisplay}{tempUnit})
+                        </span>
                     )}
                   </div>
                   <div className='flex gap-2 text-sm font-medium'>
@@ -99,15 +98,15 @@ export function CurrentWeather({ data, locationName }: CurrentWeatherProps) {
                 <div className='flex items-center gap-2'>
                   <Droplets className='h-4 w-4 text-blue-500' />
                   <div className='space-y-0.5'>
-                    <p className='text-sm font-medium'>Humidity</p>
-                    <p className='text-sm text-muted-foreground'>{humidity}%</p>
+                    <p className='text-sm font-medium text-white'>Humidity</p>
+                    <p className='text-sm text-slate-200'>{humidity}%</p>
                   </div>
                 </div>
                 <div className='flex items-center gap-2'>
                   <Wind className='h-4 w-4 text-blue-500' />
                   <div className='space-y-0.5'>
-                    <p className='text-sm font-medium'>Wind Speed</p>
-                    <p className='text-sm text-muted-foreground'>
+                    <p className='text-sm font-medium text-white'>Wind Speed</p>
+                    <p className='text-sm text-slate-200'>
                       {windSpeed} {windSpeedUnit}
                     </p>
                   </div>
@@ -123,13 +122,12 @@ export function CurrentWeather({ data, locationName }: CurrentWeatherProps) {
                   className='h-full w-full object-contain'
                 />
                 <div className='absolute bottom-0 text-center'>
-                  <p className='text-sm font-medium capitalize'>{condition}</p>
+                  <p className='text-sm font-medium capitalize text-slate-100'>{condition}</p>
                 </div>
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+      </WeatherCard>
     </motion.div>
   );
 }

@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import {
   LineChart,
   Line,
@@ -10,6 +9,7 @@ import {
 import { format } from "date-fns";
 import { variants, type ForecastData } from "@/utils/types";
 import { motion } from "framer-motion";
+import { WeatherCard } from "./weather-card";
 interface HourlyTemperatureProps {
   data: ForecastData;
 }
@@ -39,23 +39,19 @@ export function HourlyTemperature({ data }: HourlyTemperatureProps) {
       variants={variants}
       transition={{ duration: 0.5 }}
     >
-      <Card className='flex-1 shadow-2xl'>
-        <CardHeader>
-          <CardTitle>Today's Temperature</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <WeatherCard title="Today's Temperature" className='flex-1'>
           <div className='h-[200px] w-full'>
             <ResponsiveContainer width='100%' height='100%'>
               <LineChart data={chartData}>
                 <XAxis
                   dataKey='time'
-                  stroke='#888888'
+                  stroke='#e2e8f0'
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
-                  stroke='#888888'
+                  stroke='#e2e8f0'
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
@@ -65,24 +61,24 @@ export function HourlyTemperature({ data }: HourlyTemperatureProps) {
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className='rounded-lg border bg-background p-2 shadow-sm'>
-                          <div className='grid grid-cols-2 gap-2'>
-                            <div className='flex flex-col'>
-                              <span className='text-[0.70rem] uppercase text-muted-foreground'>
-                                Temperature
-                              </span>
-                              <span className='font-bold'>
-                                {payload[0].value}°
-                              </span>
-                            </div>
-                            <div className='flex flex-col'>
-                              <span className='text-[0.70rem] uppercase text-muted-foreground'>
-                                Feels Like
-                              </span>
-                              <span className='font-bold'>
-                                {payload[1].value}°
-                              </span>
-                            </div>
+                         <div className='rounded-lg border border-white/30 bg-slate-900/70 p-2 shadow-sm backdrop-blur-sm'>
+                           <div className='grid grid-cols-2 gap-2'>
+                             <div className='flex flex-col'>
+                               <span className='text-[0.70rem] uppercase text-slate-300'>
+                                 Temperature
+                               </span>
+                               <span className='font-bold text-white'>
+                                 {payload[0].value}°
+                               </span>
+                             </div>
+                             <div className='flex flex-col'>
+                               <span className='text-[0.70rem] uppercase text-slate-300'>
+                                 Feels Like
+                               </span>
+                               <span className='font-bold text-white'>
+                                 {payload[1].value}°
+                               </span>
+                             </div>
                           </div>
                         </div>
                       );
@@ -93,14 +89,14 @@ export function HourlyTemperature({ data }: HourlyTemperatureProps) {
                 <Line
                   type='monotone'
                   dataKey='temp'
-                  stroke='#2563eb'
+                  stroke='#f59e0b'
                   strokeWidth={2}
                   dot={false}
                 />
                 <Line
                   type='monotone'
                   dataKey='feels_like'
-                  stroke='#64748b'
+                  stroke='#93c5fd'
                   strokeWidth={2}
                   dot={false}
                   strokeDasharray='5 5'
@@ -108,8 +104,7 @@ export function HourlyTemperature({ data }: HourlyTemperatureProps) {
               </LineChart>
             </ResponsiveContainer>
           </div>
-        </CardContent>
-      </Card>
+      </WeatherCard>
     </motion.div>
   );
 }

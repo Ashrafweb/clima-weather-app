@@ -5,8 +5,10 @@ import WeatherSkeleton from "@/components/loading-skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { WeatherDetails } from "@/components/weather-details";
 import { WeatherForecast } from "@/components/weather-forecast";
+import { useWeatherBackground } from "@/components/weather-background-provider";
 import { useWeatherForecast, useWeatherQuery } from "@/hooks/use-weather";
 import { AlertTriangle } from "lucide-react";
+import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 export function CityPage() {
@@ -18,6 +20,13 @@ export function CityPage() {
   const coordinates = { lat, lon };
   const weatherQuery = useWeatherQuery(coordinates);
   const forecastQuery = useWeatherForecast(coordinates);
+  const { setWeatherMain } = useWeatherBackground();
+  const weatherMain = weatherQuery.data?.weather?.[0]?.main ?? null;
+
+  useEffect(() => {
+    setWeatherMain(weatherMain);
+    return () => setWeatherMain(null);
+  }, [setWeatherMain, weatherMain]);
 
   if (weatherQuery.error || forecastQuery.error) {
     return (
