@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import About from "./pages/about";
 import { UnitSystemProvider } from "./components/unit-system-provider";
+import { WeatherBackgroundProvider } from "./components/weather-background-provider";
 function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -25,13 +26,15 @@ function App() {
       <BrowserRouter>
         <ThemeProvider defaultTheme='dark'>
           <UnitSystemProvider>
-            <Layout>
-              <Routes>
-                <Route path='/' element={<WeatherDashboard />} />
-                <Route path='/city/:cityName' element={<CityPage />} />
-                <Route path='/about' element={<About />} />
-              </Routes>
-            </Layout>
+            <WeatherBackgroundProvider>
+              <Layout>
+                <Routes>
+                  <Route path='/' element={<WeatherDashboard />} />
+                  <Route path='/city/:cityName' element={<CityPage />} />
+                  <Route path='/about' element={<About />} />
+                </Routes>
+              </Layout>
+            </WeatherBackgroundProvider>
             <Toaster richColors />
           </UnitSystemProvider>
         </ThemeProvider>

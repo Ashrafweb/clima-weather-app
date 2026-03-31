@@ -33,12 +33,12 @@ export function useSearchHistory() {
         searchedAt: Date.now(),
       };
 
-      // Remove duplicates and keep only last 10 searches
+      // Remove duplicates and keep only last 5 searches
       const filteredHistory = history.filter(
         (item: SearchHistoryItem) =>
           !(item.lat === search.lat && item.lon === search.lon)
       );
-      const newHistory = [newSearch, ...filteredHistory].slice(0, 10);
+      const newHistory = [newSearch, ...filteredHistory].slice(0, 5);
 
       setHistory(newHistory);
       return Promise.resolve(newHistory);
