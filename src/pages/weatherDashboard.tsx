@@ -14,8 +14,7 @@ import {
   useWeatherQuery,
 } from "@/hooks/use-weather";
 import { AlertTriangle, MapPin, RefreshCw } from "lucide-react";
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 const WeatherDashboard: React.FC = () => {
   const {
